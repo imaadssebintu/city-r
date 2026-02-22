@@ -19,10 +19,9 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: "."
+          source: "go.mod,go.sum,main.go,Dockerfile,docker-compose.yml,views,static"
           target: "~/city-r"
           rm: true
-          exclude: ".git, .github, node_modules, *.tar.gz"
 
       - name: Execute docker-compose via SSH
         uses: appleboy/ssh-action@master

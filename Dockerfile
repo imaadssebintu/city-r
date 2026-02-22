@@ -10,8 +10,10 @@ RUN go mod download
 # Copy the rest of the source code
 COPY . .
 
-# Build the Go application securely
-RUN CGO_ENABLED=0 GOOS=linux go build -o city-r-app .
+# Build the Go application securely with cache mounts for faster builds
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    CGO_ENABLED=0 GOOS=linux go build -o city-r-app .
 
 # Final stage - using a very lightweight alpine image
 FROM alpine:latest

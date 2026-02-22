@@ -21,6 +21,8 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           source: "."
           target: "~/city-r"
+          rm: true
+          exclude: ".git, .github, node_modules, *.tar.gz"
 
       - name: Execute docker-compose via SSH
         uses: appleboy/ssh-action@master

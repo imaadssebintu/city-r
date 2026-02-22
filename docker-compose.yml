@@ -1,7 +1,9 @@
 services:
-  web:
+  app:
     build: .
-    container_name: city-r-web
+    container_name: city-r-app
     ports:
       - "3000:3000"
     restart: always
+    environment:
+      - PORT=3000

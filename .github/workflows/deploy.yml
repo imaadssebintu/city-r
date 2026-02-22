@@ -21,24 +21,15 @@ jobs:
         run: |
           CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o city-r-app main.go
 
-      - name: Cleanup for SCP
-        run: |
-          rm -rf .git
-          rm -rf .github
-
       - name: Copy files via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          source: "city-r-app,views,static,Dockerfile,docker-compose.yml"
+          source: "city-r-app,views,static,Dockerfile,docker-compose.yml,.dockerignore"
           target: "/home/${{ secrets.SERVER_USER }}/city-r"
           strip_components: 0
-          timeout: 10m
-          command_timeout: 10m
-          overwrite: true
-          debug: true
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -49,4 +40,3 @@ jobs:
           script: |
             cd /home/${{ secrets.SERVER_USER }}/city-r
             docker compose up --build -d
-            docker image prune -f

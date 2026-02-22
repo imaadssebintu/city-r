@@ -1,37 +1,22 @@
-# Build stage
-FROM golang:1.23-alpine AS builder
-
-WORKDIR /app
-
-# Copy go.mod and go.sum first to leverage Docker cache
-COPY go.mod go.sum ./
-RUN go mod download
-
-# Copy the rest of the source code
-COPY . .
-
-# Build the Go application securely with cache mounts for faster builds
-RUN --mount=type=cache,target=/root/.cache/go-build \
-    --mount=type=cache,target=/go/pkg/mod \
-    CGO_ENABLED=0 GOOS=linux go build -o city-r-app .
-
-# Final stage - using a very lightweight alpine image
 FROM alpine:latest
 
-# Install tzdata just in case the app needs timezone information
-RUN apk --no-cache add ca-certificates tzdata
-
 WORKDIR /app
 
-# Copy the compiled binary from the builder stage
-COPY --from=builder /app/city-r-app .
+# Install ca-certificates and tzdata
+RUN apk --no-cache add ca-certificates tzdata
 
-# Copy static assets and HTML templates
+# Copy the pre-built binary (built in CI)
+COPY city-r-app .
+
+# Copy templates and static assets
 COPY views/ ./views/
 COPY static/ ./static/
 
-# Expose port 3000
+# Set environment variables
+ENV PORT=3000
+
+# Expose port
 EXPOSE 3000
 
-# Run the app
+# Run the application
 CMD ["./city-r-app"]

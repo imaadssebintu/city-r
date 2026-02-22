@@ -30,6 +30,6 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ~/city-r
-            docker compose down || docker-compose down
-            docker compose up -d --build || docker-compose up -d --build
+            docker compose down || true
+            docker compose up -d --build
             docker image prune -f

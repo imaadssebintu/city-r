@@ -21,6 +21,11 @@ jobs:
         run: |
           CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o mms main.go
 
+      - name: Cleanup for SCP
+        run: |
+          rm -rf .git
+          rm -rf .github
+
       - name: Copy files via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -32,6 +37,8 @@ jobs:
           strip_components: 0
           timeout: 10m
           command_timeout: 10m
+          overwrite: true
+          debug: true
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3

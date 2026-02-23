@@ -1,302 +1,297 @@
-<!-- ══ TOP UTILITY BAR (Same as home) ══════════════════════════════ -->
-<div class="bg-[#eeeeee] border-b border-[#dde1e7] py-[4px] text-[11px]">
-    <div class="max-w-[1280px] mx-auto px-4 lg:px-8 flex items-center flex-wrap">
-        <a href="/sell"
-            class="text-primary font-bold inline-flex items-center gap-1 px-2.5 border-r border-[#dde1e7] hover:underline first:pl-0"><i
-                class="fa fa-tag"></i> List a Vehicle FREE</a>
-        <a href="/edit"
-            class="text-[#444] inline-flex items-center gap-1 px-2.5 border-r border-[#dde1e7] hover:text-primary hover:underline"><i
-                class="fa fa-pencil"></i> Edit / Remove</a>
-        <a href="/request"
-            class="text-[#444] inline-flex items-center gap-1 px-2.5 border-r border-[#dde1e7] hover:text-primary hover:underline"><i
-                class="fa fa-car-side"></i> Request a Car</a>
-        <a href="/financing"
-            class="text-[#444] inline-flex items-center gap-1 px-2.5 border-r border-[#dde1e7] hover:text-primary hover:underline"><i
-                class="fa fa-money-bill"></i> Financing</a>
-        <a href="/support"
-            class="text-[#444] inline-flex items-center gap-1 px-2.5 border-r border-[#dde1e7] hover:text-primary hover:underline"><i
-                class="fa fa-headset"></i> Support</a>
-        <a href="/login" class="text-[#444] inline-flex items-center gap-1 px-2.5 hover:text-primary hover:underline"><i
-                class="fa fa-user"></i> Dealer Login</a>
-        <a href="/wishlist"
-            class="text-[#444] inline-flex items-center gap-1 px-2.5 hover:text-primary hover:underline ml-auto"><i
-                class="fa-regular fa-heart"></i> Saved: 0</a>
-    </div>
-</div>
+{{define "head"}}
+{{end}}
 
-<!-- ══ MAIN HEADER ══════════════════════════════════ -->
-<header class="bg-white border-b border-gray-200 py-4 shadow-sm sticky top-0 z-50">
-    <div class="max-w-[1280px] mx-auto px-4 lg:px-8 flex items-center justify-between">
-        <a href="/" class="flex flex-col no-underline group">
-            <span
-                class="text-3xl font-black text-primary tracking-tight leading-none group-hover:text-primary-h transition-colors">City-R</span>
-            <span class="text-xs text-gray-500 font-medium mt-1">Premium Car Marketplace</span>
-        </a>
-        <div>
-            <a href="/"
-                class="text-gray-600 hover:text-primary font-medium flex items-center gap-2 transition-colors"><i
-                    class="fa fa-arrow-left"></i> Back to Search</a>
-        </div>
-    </div>
-</header>
+<div class="page-wrapper">
+    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr),320px] gap-8 mt-8 items-start mb-16">
 
-<!-- ══ PAGE BODY (Premium Layout) ══════════════════════════════════════ -->
-<div class="bg-gray-50 min-h-screen pb-16">
+        <!-- ── Main Column ── -->
+        <main class="min-w-0 flex flex-col gap-6">
 
-    <!-- Breadcrumbs -->
-    <div class="max-w-[1280px] mx-auto px-4 lg:px-8 py-6">
-        <div class="text-sm text-gray-500 font-medium flex items-center gap-2">
-            <a href="/" class="text-gray-800 hover:text-primary transition-colors">Home</a>
-            <i class="fa fa-chevron-right text-[10px] text-gray-400"></i>
-            <a href="/cars?make={{.Car.Make}}"
-                class="text-gray-800 hover:text-primary transition-colors">{{.Car.Make}}</a>
-            <i class="fa fa-chevron-right text-[10px] text-gray-400"></i>
-            <span class="text-gray-400">{{.Car.Model}}</span>
-        </div>
-    </div>
-
-    <!-- Main Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8 max-w-[1280px] mx-auto px-4 lg:px-8 items-start">
-
-        <!-- ═══ LEFT COLUMN (Showcase & Details) ══════════ -->
-        <main class="flex flex-col gap-8">
-
-            <!-- Hero Title & Price (Mobile/Tablet usually above image, Desktop inline or above) -->
-            <div
-                class="flex flex-col md:flex-row md:items-end justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <div>
+            <!-- Breadcrumb + Title -->
+            <div class="bg-card border border-border rounded-md px-5 py-4">
+                <a href="/"
+                    class="inline-flex items-center gap-1.5 text-muted-foreground text-[13px] font-medium mb-3 hover:text-primary transition-colors">
+                    <iconify-icon icon="lucide:arrow-left"></iconify-icon>
+                    Back to listings
+                </a>
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                    <div>
+                        <span class="text-muted-foreground text-[12px] font-semibold block mb-1">
+                            {{.Car.Year}} · {{.Car.Make}}
+                        </span>
+                        <h1 class="text-[28px] font-extrabold m-0 leading-tight text-foreground">{{.Car.Model}}</h1>
+                        <span class="text-muted-foreground text-[13px] mt-1.5 flex items-center gap-1">
+                            <iconify-icon icon="lucide:map-pin" class="text-primary"></iconify-icon>
+                            {{.Car.DealerCity}}, Romania · Added 2 days ago
+                        </span>
+                    </div>
                     {{if .Car.Badge}}
-                    <span
-                        class="inline-block bg-red-100 text-primary text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full mb-3">{{.Car.Badge}}</span>
+                    <div class="shrink-0">
+                        {{if eq .Car.Badge "New"}}
+                        <span
+                            class="bg-success text-success-foreground text-[11px] font-bold px-3 py-1 rounded-[3px] uppercase tracking-wider">New</span>
+                        {{else if eq .Car.Badge "Hot Deal"}}
+                        <span
+                            class="bg-accent text-accent-foreground text-[11px] font-bold px-3 py-1 rounded-[3px] uppercase tracking-wider">Hot
+                            Deal</span>
+                        {{else if eq .Car.Badge "Low Mileage"}}
+                        <span
+                            class="bg-primary text-primary-foreground text-[11px] font-bold px-3 py-1 rounded-[3px] uppercase tracking-wider">Low
+                            km</span>
+                        {{end}}
+                    </div>
                     {{end}}
-                    <h1 class="text-3xl lg:text-4xl font-black text-gray-900 m-0 leading-tight tracking-tight">
-                        {{.Car.Year}} {{.Car.Make}} {{.Car.Model}}</h1>
-                    <div class="text-gray-500 mt-2 font-medium flex items-center gap-2"><i
-                            class="fa fa-location-dot text-gray-400"></i> {{.Car.DealerCity}}, Romania <span
-                            class="text-gray-300">|</span> {{.Car.Mileage}} km</div>
-                </div>
-                <div class="text-left md:text-right">
-                    <div class="text-sm text-gray-500 font-semibold mb-1 uppercase tracking-wider">Asking Price</div>
-                    <div class="text-4xl font-black text-primary tracking-tight">€{{.Car.Price}}</div>
                 </div>
             </div>
 
-            <!-- Enhanced Gallery -->
-            <div class="bg-white rounded-2xl p-2 shadow-sm border border-gray-100">
-                <div class="relative rounded-xl overflow-hidden bg-gray-100 h-[400px] md:h-[550px] group">
+            <!-- Image Gallery -->
+            <div class="bg-card border border-border rounded-md overflow-hidden">
+                <div class="relative aspect-[16/9] bg-secondary overflow-hidden">
                     <img src="{{.Car.ImageURL}}" alt="{{.Car.Make}} {{.Car.Model}}"
-                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-
-                    <!-- Gradient Overlays for premium feel -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none">
-                    </div>
-
-                    <!-- Navigation Controls -->
-                    <button
-                        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 w-12 h-12 flex items-center justify-center rounded-full shadow-lg backdrop-blur-sm transition-all"><i
-                            class="fa fa-chevron-left"></i></button>
-                    <button
-                        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 w-12 h-12 flex items-center justify-center rounded-full shadow-lg backdrop-blur-sm transition-all"><i
-                            class="fa fa-chevron-right"></i></button>
-
-                    <!-- Action Overlay -->
-                    <div class="absolute bottom-4 right-4 flex gap-2">
-                        <button
-                            class="bg-white/90 hover:bg-white text-gray-800 px-4 py-2 rounded-lg shadow-lg backdrop-blur-sm text-sm font-bold flex items-center gap-2 transition-transform hover:-translate-y-0.5"><i
-                                class="fa-regular fa-heart text-primary"></i> Save</button>
-                        <button
-                            class="bg-white/90 hover:bg-white text-gray-800 px-4 py-2 rounded-lg shadow-lg backdrop-blur-sm text-sm font-bold flex items-center gap-2 transition-transform hover:-translate-y-0.5"><i
-                                class="fa fa-share-nodes text-blue-600"></i> Share</button>
-                    </div>
+                        class="w-full h-full object-cover transition-opacity duration-300" id="active-image" />
                 </div>
-
-                <!-- Premium Thumbnails -->
-                <div class="flex gap-2 mt-2 overflow-x-auto pb-2 px-1 scrollbar-hide">
+                {{if .Car.Gallery}}
+                <div class="grid grid-cols-5 gap-2 p-3 border-t border-border bg-secondary/30">
+                    <div class="aspect-square rounded-[4px] cursor-pointer overflow-hidden ring-2 ring-primary ring-offset-1 transition-all thumbnail"
+                        onclick="updateMainImage(this, '{{.Car.ImageURL}}')">
+                        <img src="{{.Car.ImageURL}}"
+                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-200" />
+                    </div>
                     {{range .Car.Gallery}}
-                    <div
-                        class="h-20 w-28 flex-shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 border-transparent hover:border-primary opacity-60 hover:opacity-100 transition-all">
-                        <img src="{{.}}" class="w-full h-full object-cover">
+                    <div class="aspect-square rounded-[4px] cursor-pointer overflow-hidden ring-2 ring-transparent ring-offset-1 hover:ring-primary transition-all thumbnail"
+                        onclick="updateMainImage(this, '{{.}}')">
+                        <img src="{{.}}"
+                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-200" />
                     </div>
                     {{end}}
                 </div>
+                {{end}}
             </div>
 
-            <!-- Performance & Specs Grid -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/50">
-                    <h2 class="text-xl font-bold text-gray-900 m-0">Vehicle Specifications</h2>
+            <!-- Spec Grid -->
+            <div class="bg-card border border-border rounded-md overflow-hidden">
+                <div
+                    class="bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center gap-2.5 text-foreground">
+                    <iconify-icon icon="lucide:info" class="text-primary"></iconify-icon>
+                    Vehicle Overview
                 </div>
-                <div class="p-8 grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <!-- Spec Items -->
-                    <div class="flex flex-col gap-1">
-                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider"><i
-                                class="fa fa-calendar mr-1"></i> Year</span>
-                        <span class="text-gray-900 font-semibold text-lg">{{.Car.Year}}</span>
+                <div class="grid grid-cols-2 md:grid-cols-3 divide-x-0 gap-0">
+                    <div class="flex flex-col gap-0.5 p-4 border-b border-r border-border">
+                        <span
+                            class="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">Mileage</span>
+                        <div class="text-[15px] font-bold text-foreground flex items-center gap-1.5 mt-1">
+                            <iconify-icon icon="lucide:gauge" class="text-primary"></iconify-icon>
+                            {{.Car.Mileage}} km
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider"><i
-                                class="fa fa-gauge-high mr-1"></i> Mileage</span>
-                        <span class="text-gray-900 font-semibold text-lg">{{.Car.Mileage}} km</span>
+                    <div class="flex flex-col gap-0.5 p-4 border-b border-r border-border md:border-r">
+                        <span class="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">Body
+                            Type</span>
+                        <div class="text-[15px] font-bold text-foreground flex items-center gap-1.5 mt-1">
+                            <iconify-icon icon="lucide:car" class="text-primary"></iconify-icon>
+                            {{.Car.BodyType}}
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider"><i
-                                class="fa fa-gas-pump mr-1"></i> Fuel</span>
-                        <span class="text-gray-900 font-semibold text-lg">{{.Car.Fuel}}</span>
+                    <div class="flex flex-col gap-0.5 p-4 border-b border-border">
+                        <span class="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">Fuel
+                            Type</span>
+                        <div class="text-[15px] font-bold text-foreground flex items-center gap-1.5 mt-1">
+                            <iconify-icon icon="lucide:fuel" class="text-primary"></iconify-icon>
+                            {{.Car.Fuel}}
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider"><i
-                                class="fa fa-car mr-1"></i> Body Type</span>
-                        <span class="text-gray-900 font-semibold text-lg">{{.Car.BodyType}}</span>
+                    <div class="flex flex-col gap-0.5 p-4 border-b border-r border-border">
+                        <span
+                            class="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">Transmission</span>
+                        <div class="text-[15px] font-bold text-foreground flex items-center gap-1.5 mt-1">
+                            <iconify-icon icon="lucide:settings-2" class="text-primary"></iconify-icon>
+                            {{.Car.Transmission}}
+                        </div>
                     </div>
-
-                    <div class="col-span-2 md:col-span-4 h-px bg-gray-100 my-2"></div>
-
-                    <div class="flex flex-col gap-1">
-                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider"><i
-                                class="fa fa-cogs mr-1"></i> Engine</span>
-                        <span class="text-gray-900 font-semibold text-base">{{.Car.Engine}}</span>
+                    <div class="flex flex-col gap-0.5 p-4 border-b border-r border-border md:border-r">
+                        <span
+                            class="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">Engine</span>
+                        <div class="text-[15px] font-bold text-foreground flex items-center gap-1.5 mt-1">
+                            <iconify-icon icon="lucide:zap" class="text-primary"></iconify-icon>
+                            {{.Car.Engine}}
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider"><i
-                                class="fa fa-code-branch mr-1"></i> Transmission</span>
-                        <span class="text-gray-900 font-semibold text-base">{{.Car.Transmission}}</span>
+                    <div class="flex flex-col gap-0.5 p-4 border-b border-border">
+                        <span
+                            class="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">Color</span>
+                        <div class="text-[15px] font-bold text-foreground flex items-center gap-1.5 mt-1">
+                            <iconify-icon icon="lucide:palette" class="text-primary"></iconify-icon>
+                            {{.Car.Color}}
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider"><i
-                                class="fa fa-truck-fast mr-1"></i> Drivetrain</span>
-                        <span class="text-gray-900 font-semibold text-base">{{.Car.Drive}}</span>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider"><i
-                                class="fa fa-palette mr-1"></i> Exterior</span>
-                        <span class="text-gray-900 font-semibold text-base">{{.Car.Color}}</span>
+                    <div class="flex flex-col gap-0.5 p-4 border-r border-border col-span-2 md:col-span-1">
+                        <span class="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold">Drive
+                            Type</span>
+                        <div class="text-[15px] font-bold text-foreground flex items-center gap-1.5 mt-1">
+                            <iconify-icon icon="lucide:route" class="text-primary"></iconify-icon>
+                            {{.Car.Drive}}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Rich Description -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="px-8 py-5 border-b border-gray-100 bg-gray-50/50">
-                    <h2 class="text-xl font-bold text-gray-900 m-0">Seller's Notes</h2>
+            <!-- Description -->
+            {{if .Car.Description}}
+            <div class="bg-card border border-border rounded-md overflow-hidden">
+                <div
+                    class="bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center gap-2.5 text-foreground">
+                    <iconify-icon icon="lucide:text-quote" class="text-primary"></iconify-icon>
+                    Description
                 </div>
-                <div class="p-8 text-gray-600 leading-relaxed text-base whitespace-pre-line">
-                    {{.Car.Description}}
+                <div class="p-5 text-[14px] leading-relaxed text-secondary-foreground">
+                    <p>{{.Car.Description}}</p>
                 </div>
             </div>
+            {{end}}
 
+            <!-- Mobile: Price + Contact (visible on small screens only) -->
+            <div class="lg:hidden bg-card border border-border rounded-md overflow-hidden">
+                <div
+                    class="bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center gap-2.5 text-foreground">
+                    <iconify-icon icon="lucide:tag" class="text-primary"></iconify-icon>
+                    Price & Contact
+                </div>
+                <div class="p-5 flex flex-col gap-3">
+                    <div class="text-[28px] font-extrabold text-primary">UGX {{.Car.Price}}</div>
+                    <button
+                        class="w-full p-3.5 bg-primary text-primary-foreground rounded-md font-bold text-[15px] flex items-center justify-center gap-2 hover:opacity-90 transition-opacity border-none cursor-pointer"
+                        onclick="alert('Phone: {{.Car.DealerPhone}}')">
+                        <iconify-icon icon="lucide:phone"></iconify-icon>
+                        Show Phone Number
+                    </button>
+                    <button
+                        class="w-full p-3.5 bg-secondary border border-border text-foreground rounded-md font-bold text-[15px] flex items-center justify-center gap-2 hover:border-primary hover:text-primary transition-colors cursor-pointer">
+                        <iconify-icon icon="lucide:message-square"></iconify-icon>
+                        Send Message
+                    </button>
+                </div>
+            </div>
         </main>
 
-        <!-- ═══ RIGHT COLUMN (Floating Dealer Card) ═════════════ -->
-        <aside class="space-y-6 lg:sticky lg:top-24">
+        <!-- ── Sticky Sidebar ── -->
+        <aside class="hidden lg:flex flex-col gap-6">
 
-            <!-- Premium Dealer Card -->
-            <div class="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
-                <!-- Branding Header -->
-                <div class="bg-gradient-to-br from-gray-900 to-navy p-6 text-center relative overflow-hidden">
-                    <div
-                        class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
-                    </div>
-                    <div class="relative z-10">
-                        <div
-                            class="w-20 h-20 bg-white rounded-2xl mx-auto flex items-center justify-center shadow-lg mb-4 transform -rotate-3 hover:rotate-0 transition-transform">
-                            <i class="fa fa-building text-3xl text-gray-800"></i>
+            <!-- Sticky Price + Contact Card -->
+            <div class="lg:sticky lg:top-6 flex flex-col gap-6">
+
+                <!-- Price Card -->
+                <div class="bg-card border border-border rounded-md overflow-hidden">
+                    <div class="p-5 border-b border-border">
+                        <div class="text-[12px] text-muted-foreground uppercase tracking-wider font-semibold mb-1">
+                            Asking Price</div>
+                        <div class="text-[30px] font-extrabold text-primary leading-none">UGX {{.Car.Price}}</div>
+                        <div class="text-[12px] text-muted-foreground mt-1.5 flex items-center gap-1">
+                            <iconify-icon icon="lucide:map-pin"></iconify-icon>
+                            {{.Car.DealerCity}}, Romania
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-1">{{.Car.DealerName}}</h3>
-                        <p class="text-gray-300 text-sm font-medium"><i
-                                class="fa fa-location-dot text-primary mr-1"></i> {{.Car.DealerCity}}, Romania</p>
                     </div>
-                </div>
-
-                <!-- Contact Buttons -->
-                <div class="p-6 space-y-4">
-                    <a href="tel:{{.Car.DealerPhone}}"
-                        class="flex items-center justify-center gap-3 w-full py-4 bg-gray-900 hover:bg-gray-800 text-white rounded-xl font-bold transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 no-underline">
-                        <i class="fa fa-phone text-xl"></i>
-                        <span>{{.Car.DealerPhone}}</span>
-                    </a>
-
-                    <a href="#"
-                        class="flex items-center justify-center gap-3 w-full py-4 bg-[#25D366] hover:bg-[#1DA851] text-white rounded-xl font-bold transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 no-underline">
-                        <i class="fa-brands fa-whatsapp text-2xl"></i>
-                        <span>WhatsApp Chat</span>
-                    </a>
-
-                    <button
-                        class="w-full py-4 bg-white border-2 border-primary text-primary hover:bg-red-50 rounded-xl font-bold transition-all">
-                        <i class="fa fa-envelope mr-2"></i> Email Dealer
-                    </button>
-
-                    <div class="pt-4 border-t border-gray-100">
+                    <div class="p-4 flex flex-col gap-3">
                         <button
-                            class="w-full py-3 text-gray-500 hover:text-gray-800 font-bold text-sm bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
-                            <i class="fa fa-calculator mr-2"></i> Calculate Finance Options
+                            class="w-full p-3.5 bg-primary text-primary-foreground rounded-md font-bold text-[14px] flex items-center justify-center gap-2 hover:opacity-90 transition-opacity border-none cursor-pointer"
+                            onclick="alert('Phone: {{.Car.DealerPhone}}')">
+                            <iconify-icon icon="lucide:phone"></iconify-icon>
+                            Show Phone Number
+                        </button>
+                        <button
+                            class="w-full p-3.5 bg-secondary border border-border text-foreground rounded-md font-bold text-[14px] flex items-center justify-center gap-2 hover:border-primary hover:text-primary transition-colors cursor-pointer">
+                            <iconify-icon icon="lucide:message-square"></iconify-icon>
+                            Send Message
                         </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Trust Indicators -->
-            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-100 shadow-sm">
-                <div class="flex items-start gap-4">
+                <!-- Dealer Card -->
+                <div class="bg-card border border-border rounded-md overflow-hidden">
                     <div
-                        class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center shrink-0">
-                        <i class="fa fa-shield-check text-lg"></i>
+                        class="bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center gap-2.5 text-foreground">
+                        <iconify-icon icon="lucide:user" class="text-primary"></iconify-icon>
+                        Listed by Dealer
                     </div>
-                    <div>
-                        <h4 class="font-bold text-gray-900 text-sm mb-1">Buy with Confidence</h4>
-                        <p class="text-xs text-gray-600 leading-relaxed">This dealer has been verified by City-R. Read
-                            our comprehensive safety guide before purchasing.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Related Inventory -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                    <h3 class="font-bold text-gray-900 text-sm uppercase tracking-wider">Also from this dealer</h3>
-                </div>
-                <div class="p-4 space-y-4">
-                    {{range .RelatedCars}}
-                    <a href="/cars/{{.ID}}" class="flex items-center gap-4 group no-underline">
-                        <div class="w-20 h-16 rounded-lg overflow-hidden shrink-0 shadow-sm relative">
-                            <img src="{{.ImageURL}}"
-                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            <!-- Overlay -->
-                            <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors">
-                            </div>
+                    <div class="p-4 flex items-center gap-3">
+                        <div
+                            class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-primary border border-border shrink-0">
+                            <iconify-icon icon="lucide:building-2" class="text-[20px]"></iconify-icon>
                         </div>
-                        <div class="flex-1 min-w-0">
-                            <h4
-                                class="font-bold text-gray-900 text-sm truncate group-hover:text-primary transition-colors">
-                                {{.Make}} {{.Model}}</h4>
-                            <p class="text-xs text-gray-500 font-medium">{{.Year}} • {{.Mileage}}km</p>
-                            <p class="text-primary font-black text-sm mt-0.5">€{{.Price}}</p>
+                        <div>
+                            <h4 class="m-0 text-[15px] font-bold text-foreground">{{.Car.DealerName}}</h4>
+                            <p class="m-0 mt-0.5 text-[13px] text-muted-foreground">{{.Car.DealerCity}}, Romania</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Safety Tips -->
+                <div class="bg-card border border-border rounded-md overflow-hidden">
+                    <div
+                        class="bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center gap-2.5 text-foreground">
+                        <iconify-icon icon="lucide:shield-check" class="text-success"></iconify-icon>
+                        Safety Tips
+                    </div>
+                    <ul class="m-0 p-4 pl-5 space-y-2 text-[13px] text-secondary-foreground list-disc">
+                        <li>Meet at a safe public location</li>
+                        <li>Inspect the vehicle thoroughly</li>
+                        <li>Never pay in advance</li>
+                        <li>Verify all documents and VIN</li>
+                    </ul>
+                </div>
+
+                <!-- Similar Cars -->
+                {{if .RelatedCars}}
+                <div class="bg-card border border-border rounded-md overflow-hidden">
+                    <div
+                        class="bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center gap-2.5 text-foreground">
+                        <iconify-icon icon="lucide:car" class="text-primary"></iconify-icon>
+                        Similar Cars
+                    </div>
+                    {{range .RelatedCars}}
+                    <a href="/cars/{{.ID}}"
+                        class="flex gap-3 p-3 border-b border-border last:border-b-0 no-underline text-inherit hover:bg-secondary/50 transition-colors group">
+                        <div class="w-20 h-14 rounded-[4px] overflow-hidden shrink-0 bg-secondary">
+                            <img src="{{.ImageURL}}"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" />
+                        </div>
+                        <div class="flex flex-col gap-0.5 overflow-hidden min-w-0">
+                            <div class="font-bold text-[13px] leading-tight truncate text-foreground">{{.Make}}
+                                {{.Model}}</div>
+                            <div class="text-[11px] text-muted-foreground">{{.Year}}</div>
+                            <div class="flex items-center gap-2 text-[11px] text-muted-foreground flex-wrap">
+                                <span class="flex items-center gap-0.5"><iconify-icon
+                                        icon="lucide:settings-2"></iconify-icon> {{.Transmission}}</span>
+                                <span class="flex items-center gap-0.5"><iconify-icon icon="lucide:fuel"></iconify-icon>
+                                    {{.Fuel}}</span>
+                            </div>
+                            <div class="text-primary font-bold text-[13px]">UGX {{.Price}}</div>
                         </div>
                     </a>
                     {{end}}
                 </div>
-                <a href="#"
-                    class="block w-full text-center py-4 bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold text-sm transition-colors border-t border-gray-100">
-                    View full inventory &rarr;
-                </a>
-            </div>
+                {{end}}
 
+            </div><!-- /sticky wrapper -->
         </aside>
-
     </div>
 </div>
 
-<!-- ══ FOOTER (Same as home) ═══════════════════════════════════════ -->
-<footer class="bg-navy text-gray-300 py-8 text-sm border-t-4 border-primary">
-    <div class="max-w-[1280px] mx-auto px-4 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div class="flex items-center gap-6 font-medium">
-            <a href="/" class="hover:text-white transition-colors">Home</a>
-            <a href="/cars" class="hover:text-white transition-colors">All Cars</a>
-            <a href="/sell" class="hover:text-white transition-colors">Sell</a>
-            <a href="/contact" class="hover:text-white transition-colors">Contact</a>
-        </div>
-        <div class="text-gray-500 text-xs">
-            © 2024 City-R SRL. All rights reserved.
-        </div>
-    </div>
-</footer>
+{{define "scripts"}}
+<script>
+    function updateMainImage(thumb, src) {
+        const mainImg = document.getElementById('active-image');
+        mainImg.style.opacity = '0';
+        setTimeout(() => {
+            mainImg.src = src;
+            mainImg.style.opacity = '1';
+        }, 150);
+
+        document.querySelectorAll('.thumbnail').forEach(t => {
+            t.classList.remove('ring-primary');
+            t.classList.add('ring-transparent');
+        });
+        thumb.classList.remove('ring-transparent');
+        thumb.classList.add('ring-primary');
+    }
+</script>
+{{end}}

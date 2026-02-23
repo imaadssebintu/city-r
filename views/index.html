@@ -1,0 +1,365 @@
+{{define "head"}}
+{{end}}
+
+<div class="page-wrapper">
+    <!-- Main Hub Grid -->
+    <div
+        class="grid grid-cols-1 lg:grid-cols-[220px,minmax(0,1fr),220px] gap-x-8 gap-y-6 lg:gap-y-0 mt-8 items-start mb-16">
+
+        <!-- Header Hub: Top on Mobile, Col 2 on Desktop -->
+        <div class="lg:col-start-2 order-1 lg:mb-6">
+            <div
+                class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-card border border-border rounded-md px-5 py-4 gap-4">
+                <h2 class="text-[18px] font-bold m-0 flex items-center gap-2.5 text-primary">
+                    <iconify-icon icon="lucide:clock" class="text-primary"></iconify-icon>
+                    Latest Cars for Sale
+                </h2>
+                <div class="text-muted-foreground text-[13px] flex items-center gap-1.5">
+                    <iconify-icon icon="lucide:calendar"></iconify-icon>
+                    Last updated: Today
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Left (Filters + Cards): Below Header on Mobile, Col 1 on Desktop -->
+        <aside class="sidebar-left lg:col-start-1 lg:row-start-1 lg:row-span-12 order-2 w-full flex flex-col gap-6">
+            <!-- Body Type Accordion -->
+            <div class="bg-card border border-border rounded-md overflow-hidden lg:mt-0">
+                <button onclick="toggleAccordion('body-type')"
+                    class="w-full text-left bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center justify-between text-foreground lg:cursor-default">
+                    <div class="flex items-center gap-2.5">
+                        <iconify-icon icon="lucide:car" class="text-primary"></iconify-icon>
+                        Browse by Body Type
+                    </div>
+                    <iconify-icon id="icon-body-type" icon="lucide:chevron-down"
+                        class="lg:hidden transition-transform duration-200"></iconify-icon>
+                </button>
+                <div id="body-type" class="hidden lg:block">
+                    <ul class="list-none p-0 m-0">
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?body=Sedan"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Sedan</a>
+                            <span class="text-muted-foreground text-[13px]">185</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?body=SUV"
+                                class="text-foreground font-medium hover:text-primary transition-colors">SUV</a>
+                            <span class="text-muted-foreground text-[13px]">390</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?body=Hatchback"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Hatchback</a>
+                            <span class="text-muted-foreground text-[13px]">142</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?body=Estate"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Estate</a>
+                            <span class="text-muted-foreground text-[13px]">67</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?body=Coupe"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Coupe</a>
+                            <span class="text-muted-foreground text-[13px]">48</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?body=Convertible"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Convertible</a>
+                            <span class="text-muted-foreground text-[13px]">13</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?body=Pickup"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Pickup</a>
+                            <span class="text-muted-foreground text-[13px]">29</span>
+                        </li>
+                        <li
+                            class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px] last:border-b-0">
+                            <a href="/cars?body=Van"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Van</a>
+                            <span class="text-muted-foreground text-[13px]">54</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?fuel=Electric"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Electric</a>
+                            <span class="text-muted-foreground text-[13px]">37</span>
+                        </li>
+                        <li
+                            class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px] last:border-b-0">
+                            <a href="/cars?fuel=Hybrid"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Hybrid</a>
+                            <span class="text-muted-foreground text-[13px]">62</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- City Accordion -->
+            <div class="bg-card border border-border rounded-md overflow-hidden">
+                <button onclick="toggleAccordion('city')"
+                    class="w-full text-left bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center justify-between text-foreground lg:cursor-default">
+                    <div class="flex items-center gap-2.5">
+                        <iconify-icon icon="lucide:map-pin" class="text-primary"></iconify-icon>
+                        Browse by City
+                    </div>
+                    <iconify-icon id="icon-city" icon="lucify:chevron-down"
+                        class="lg:hidden transition-transform duration-200"></iconify-icon>
+                </button>
+                <div id="city" class="hidden lg:block">
+                    <ul class="list-none p-0 m-0">
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?city=Bucharest"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Bucharest</a>
+                            <span class="text-muted-foreground text-[13px]">412</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?city=Cluj-Napoca"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Cluj-Napoca</a>
+                            <span class="text-muted-foreground text-[13px]">98</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?city=Timisoara"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Timișoara</a>
+                            <span class="text-muted-foreground text-[13px]">74</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?city=Iasi"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Iași</a>
+                            <span class="text-muted-foreground text-[13px]">55</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?city=Constanta"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Constanța</a>
+                            <span class="text-muted-foreground text-[13px]">43</span>
+                        </li>
+                        <li
+                            class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px] last:border-b-0">
+                            <a href="/cars?city=Brasov"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Brașov</a>
+                            <span class="text-muted-foreground text-[13px]">38</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Sidebar Right (Make Filter + Featured): Below Left Sidebar on Mobile, Col 3 on Desktop -->
+        <aside class="sidebar-right lg:col-start-3 lg:row-start-1 lg:row-span-12 order-3 w-full flex flex-col gap-6">
+            <!-- Featured Card: Hidden on Mobile -->
+            <div class="bg-card border border-border rounded-md overflow-hidden p-0 hidden lg:block lg:mt-0">
+                <div
+                    class="bg-card text-accent border-b-2 border-accent p-3.5 px-4 font-semibold text-[15px] flex items-center gap-2.5">
+                    <iconify-icon icon="lucide:star"></iconify-icon>
+                    Featured Listing
+                </div>
+                <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&q=80" alt="Featured Car"
+                    class="w-full h-40 object-cover" />
+                <div class="p-4">
+                    <h4 class="font-bold text-[16px] m-0 mb-1.5 text-foreground">BMW M5 Competition</h4>
+                    <p class="text-[13px] text-muted-foreground m-0 mb-3">2023 · 8,200 km · Petrol</p>
+                    <div class="text-[20px] font-extrabold text-primary m-0 mb-4">UGX 89,500</div>
+                    <a href="/cars/1"
+                        class="flex items-center justify-center w-full bg-primary text-primary-foreground p-3 rounded-[4px] font-semibold no-underline">View
+                        Details</a>
+                </div>
+            </div>
+
+            <!-- Make Accordion -->
+            <div class="bg-card border border-border rounded-md overflow-hidden">
+                <button onclick="toggleAccordion('make')"
+                    class="w-full text-left bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center justify-between text-foreground lg:cursor-default">
+                    <div class="flex items-center gap-2.5">
+                        <iconify-icon icon="lucide:flag" class="text-primary"></iconify-icon>
+                        Cars by Make
+                    </div>
+                    <iconify-icon id="icon-make" icon="lucide:chevron-down"
+                        class="lg:hidden transition-transform duration-200"></iconify-icon>
+                </button>
+                <div id="make" class="hidden lg:block">
+                    <ul class="list-none p-0 m-0">
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?make=Toyota"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Toyota</a>
+                            <span class="text-muted-foreground text-[13px]">215</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?make=Volkswagen"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Volkswagen</a>
+                            <span class="text-muted-foreground text-[13px]">184</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?make=BMW"
+                                class="text-foreground font-medium hover:text-primary transition-colors">BMW</a>
+                            <span class="text-muted-foreground text-[13px]">97</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?make=Mercedes-Benz"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Mercedes-Benz</a>
+                            <span class="text-muted-foreground text-[13px]">88</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?make=Audi"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Audi</a>
+                            <span class="text-muted-foreground text-[13px]">72</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?make=Skoda"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Skoda</a>
+                            <span class="text-muted-foreground text-[13px]">65</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?make=Dacia"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Dacia</a>
+                            <span class="text-muted-foreground text-[13px]">59</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?make=Ford"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Ford</a>
+                            <span class="text-muted-foreground text-[13px]">48</span>
+                        </li>
+                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                            <a href="/cars?make=Tesla"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Tesla</a>
+                            <span class="text-muted-foreground text-[13px]">14</span>
+                        </li>
+                        <li
+                            class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px] last:border-b-0">
+                            <a href="/cars?make=Porsche"
+                                class="text-foreground font-medium hover:text-primary transition-colors">Porsche</a>
+                            <span class="text-muted-foreground text-[13px]">9</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content (Sort + Grid): Bottom on Mobile, Col 2 on Desktop -->
+        <main class="main-content lg:col-start-2 order-4 w-full">
+            <!-- Sort Bar -->
+            <div
+                class="flex flex-col md:flex-row justify-between items-stretch md:items-center bg-card border border-border rounded-md px-5 py-3 mb-6 gap-4">
+                <div class="flex items-center gap-2.5 text-[14px] text-muted-foreground">
+                    Sort:
+                    <select class="real-select !w-full md:!w-[180px] !h-8 !text-[14px] !bg-[position:right_8px_center]">
+                        <option>Newest First</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                    </select>
+                </div>
+                <div class="flex flex-wrap gap-4 md:gap-6 justify-center">
+                    <button
+                        class="font-semibold text-primary text-[14px] pb-1 border-b-2 border-primary cursor-pointer bg-transparent border-t-0 border-x-0 outline-none whitespace-nowrap">All
+                        Cars</button>
+                    <button
+                        class="font-semibold text-muted-foreground text-[14px] pb-1 border-b-2 border-transparent hover:text-primary transition-colors cursor-pointer bg-transparent border-t-0 border-x-0 outline-none whitespace-nowrap">New
+                        Cars (12)</button>
+                    {{if .Stats}}<button
+                        class="font-semibold text-muted-foreground text-[14px] pb-1 border-b-2 border-transparent hover:text-primary transition-colors cursor-pointer bg-transparent border-t-0 border-x-0 outline-none whitespace-nowrap">Used
+                        Cars ({{.Stats.TotalListings}})</button>{{end}}
+                </div>
+            </div>
+
+            <!-- Car Grid -->
+            {{if .FeaturedCars}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {{range .FeaturedCars}}
+                <div
+                    class="bg-card border border-border rounded-md overflow-hidden flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:border-primary group">
+                    <div class="relative aspect-[16/10] bg-secondary overflow-hidden text-[0px]">
+                        <img src="{{.ImageURL}}" alt="{{.Make}} {{.Model}}" class="w-full h-full object-cover"
+                            loading="lazy" />
+                        <div class="absolute top-2.5 left-2.5 flex gap-1.5">
+                            {{if eq .Badge "New"}}
+                            <span
+                                class="bg-success text-success-foreground text-[10px] font-bold px-2 py-0.5 rounded-[3px] uppercase tracking-wider">New</span>
+                            {{else if eq .Badge "Hot Deal"}}
+                            <span
+                                class="bg-accent text-accent-foreground text-[10px] font-bold px-2 py-0.5 rounded-[3px] uppercase tracking-wider">Hot
+                                Deal</span>
+                            {{else if eq .Badge "Low Mileage"}}
+                            <span
+                                class="bg-primary text-primary-foreground text-[10px] font-bold px-2 py-0.5 rounded-[3px] uppercase tracking-wider">Low
+                                km</span>
+                            {{end}}
+                        </div>
+                    </div>
+                    <div class="p-3 flex flex-col gap-2 flex-1">
+                        <span class="text-muted-foreground text-[12px] font-semibold mb-0 block">{{.Year}} ·
+                            {{.Make}}</span>
+                        <h3
+                            class="m-0 text-[15px] font-bold leading-tight text-foreground whitespace-nowrap overflow-hidden text-ellipsis">
+                            {{.Model}}</h3>
+                        <div class="text-[18px] font-extrabold text-primary m-0">UGX {{.Price}}</div>
+                        <div
+                            class="flex flex-wrap items-center gap-y-1 gap-x-3 text-[12px] text-muted-foreground mt-0.5">
+                            <div class="inline-flex items-center gap-1">
+                                <iconify-icon icon="lucide:settings-2" class="text-primary/70"></iconify-icon>
+                                {{.Transmission}}
+                            </div>
+                            <div class="inline-flex items-center gap-1">
+                                <iconify-icon icon="lucide:fuel" class="text-primary/70"></iconify-icon>
+                                {{.Fuel}}
+                            </div>
+                            <div class="inline-flex items-center gap-1">
+                                <iconify-icon icon="lucide:car" class="text-primary/70"></iconify-icon>
+                                {{.BodyType}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-2.5 px-3 border-t border-border flex justify-between items-center bg-secondary/50">
+                        <div class="text-[12px] text-muted-foreground flex items-center gap-1">
+                            <iconify-icon icon="lucide:palette"></iconify-icon>
+                            {{.Color}}
+                        </div>
+                        <a href="/cars/{{.ID}}"
+                            class="text-primary font-semibold text-[12px] flex items-center gap-0.5 no-underline hover:underline">
+                            Details
+                            <iconify-icon icon="lucide:chevron-right"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+                {{end}}
+            </div>
+
+            {{else}}
+            <p>No cars found.</p>
+            {{end}}
+        </main>
+    </div>
+</div>
+
+
+{{define "scripts"}}
+<script>
+    function toggleAccordion(id) {
+        if (window.innerWidth >= 1024) return;
+
+        const accordionIds = ['body-type', 'city', 'make'];
+        const el = document.getElementById(id);
+        const icon = document.getElementById('icon-' + id);
+
+        if (!el || !icon) return;
+
+        const isOpening = el.classList.contains('hidden');
+
+        if (isOpening) {
+            // Close all others
+            accordionIds.forEach(accId => {
+                if (accId !== id) {
+                    const otherEl = document.getElementById(accId);
+                    const otherIcon = document.getElementById('icon-' + accId);
+                    if (otherEl) otherEl.classList.add('hidden');
+                    if (otherIcon) otherIcon.classList.remove('rotate-180');
+                }
+            });
+            // Open this one
+            el.classList.remove('hidden');
+            icon.classList.add('rotate-180');
+        } else {
+            // Close this one
+            el.classList.add('hidden');
+            icon.classList.remove('rotate-180');
+        }
+    }
+
+</script>
+{{end}}

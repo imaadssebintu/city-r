@@ -40,6 +40,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<dynamic> cars = [];
   bool isLoading = true;
+  String? expandedSection; // Track which accordion is open
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -73,75 +75,158 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, constraints) {
           bool isDesktop = constraints.maxWidth > 1024;
 
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                const TopNavBar(),
-                const AppHeader(),
-                Center(
-                  child: Container(
-                    constraints: const BoxConstraints(maxWidth: 1440),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: isDesktop ? 24 : 16,
-                      vertical: 32,
-                    ),
-                    child: isDesktop
-                        ? Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Sidebar Left (220px)
-                              const SizedBox(
-                                width: 220,
-                                child: FilterSidebar(),
-                              ),
-                              const SizedBox(width: 32),
-                              // Middle Column
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    _buildLatestCarsHub(),
-                                    const SizedBox(height: 24),
-                                    const SortBar(),
-                                    const SizedBox(height: 16),
-                                    if (isLoading)
-                                      const CircularProgressIndicator()
-                                    else if (cars.isEmpty)
-                                      const Text('No cars found.')
-                                    else
-                                      GridView.builder(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount: cars.length,
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              crossAxisSpacing: 20,
-                                              mainAxisSpacing: 20,
-                                              childAspectRatio: 0.82,
-                                            ),
-                                        itemBuilder: (context, index) =>
-                                            CarCard(car: cars[index]),
-                                      ),
-                                  ],
+          return NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [const TopNavBar(), const AppHeader()],
+                  ),
+                ),
+              ];
+            },
+            body: isDesktop
+                ? SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Column(
+                      children: [
+                        Center(
+                          child: Container(
+                            constraints: const BoxConstraints(maxWidth: 1440),
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Sidebar Left (220px) - Sticky via Offset
+                                SizedBox(
+                                  width: 220,
+                                  child: AnimatedBuilder(
+                                    animation: _scrollController,
+                                    builder: (context, child) {
+                                      // Only sticky on desktop when scroll > 0
+                                      double offset = 0;
+                                      if (_scrollController.hasClients) {
+                                        offset = _scrollController.offset;
+                                      }
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                          top: offset + 32,
+                                        ),
+                                        child: FilterSidebar(
+                                          expandedSection: expandedSection,
+                                          onToggle: (title) => setState(() {
+                                            expandedSection =
+                                                expandedSection == title
+                                                ? null
+                                                : title;
+                                          }),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 32),
-                              // Sidebar Right (220px)
-                              const SizedBox(
-                                width: 220,
-                                child: FeaturedSidebar(),
-                              ),
-                            ],
-                          )
-                        : Column(
-                            // Mobile ordering: Header Hub -> Left Sidebar -> Right Sidebar -> Sort/Content
+                                const SizedBox(width: 32),
+                                // Middle Column - Natural Scroll
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 32,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        _buildLatestCarsHub(true),
+                                        const SizedBox(height: 24),
+                                        const SortBar(),
+                                        const SizedBox(height: 16),
+                                        if (isLoading)
+                                          const CircularProgressIndicator()
+                                        else if (cars.isEmpty)
+                                          const Text('No cars found.')
+                                        else
+                                          GridView.builder(
+                                            shrinkWrap: true,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            itemCount: cars.length,
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 3,
+                                                  crossAxisSpacing: 20,
+                                                  mainAxisSpacing: 20,
+                                                  childAspectRatio: 0.82,
+                                                ),
+                                            itemBuilder: (context, index) =>
+                                                CarCard(car: cars[index]),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 32),
+                                // Sidebar Right (220px) - Sticky via Offset
+                                SizedBox(
+                                  width: 220,
+                                  child: AnimatedBuilder(
+                                    animation: _scrollController,
+                                    builder: (context, child) {
+                                      double offset = 0;
+                                      if (_scrollController.hasClients) {
+                                        offset = _scrollController.offset;
+                                      }
+                                      return Padding(
+                                        padding: EdgeInsets.only(
+                                          top: offset + 32,
+                                        ),
+                                        child: FeaturedSidebar(
+                                          expandedSection: expandedSection,
+                                          onToggle: (title) => setState(() {
+                                            expandedSection =
+                                                expandedSection == title
+                                                ? null
+                                                : title;
+                                          }),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const AppFooter(),
+                      ],
+                    ),
+                  )
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 32,
+                          ),
+                          child: Column(
                             children: [
-                              _buildLatestCarsHub(),
+                              _buildLatestCarsHub(false),
                               const SizedBox(height: 16),
-                              const FilterSidebar(),
+                              FilterSidebar(
+                                expandedSection: expandedSection,
+                                onToggle: (title) => setState(() {
+                                  expandedSection = expandedSection == title
+                                      ? null
+                                      : title;
+                                }),
+                              ),
                               const SizedBox(height: 24),
-                              const FeaturedSidebar(),
+                              FeaturedSidebar(
+                                expandedSection: expandedSection,
+                                onToggle: (title) => setState(() {
+                                  expandedSection = expandedSection == title
+                                      ? null
+                                      : title;
+                                }),
+                              ),
                               const SizedBox(height: 24),
                               const SortBar(),
                               const SizedBox(height: 16),
@@ -167,18 +252,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                             ],
                           ),
+                        ),
+                        const AppFooter(),
+                      ],
+                    ),
                   ),
-                ),
-                const AppFooter(),
-              ],
-            ),
           );
         },
       ),
     );
   }
 
-  Widget _buildLatestCarsHub() {
+  Widget _buildLatestCarsHub(bool isDesktop) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
@@ -186,36 +271,81 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: const Color(0xFFE2E8F0)),
       ),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.access_time, color: Color(0xFF1D4ED8), size: 20),
-              SizedBox(width: 10),
-              Text(
-                'Latest Cars for Sale',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1D4ED8),
+      child: isDesktop
+          ? const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.access_time, color: Color(0xFF1D4ED8), size: 20),
+                    SizedBox(width: 10),
+                    Text(
+                      'Latest Cars for Sale',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF1D4ED8),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Icon(Icons.calendar_today, color: Color(0xFF64748B), size: 16),
-              SizedBox(width: 6),
-              Text(
-                'Last updated: Today',
-                style: TextStyle(color: Color(0xFF64748B), fontSize: 13),
-              ),
-            ],
-          ),
-        ],
-      ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_today,
+                      color: Color(0xFF64748B),
+                      size: 16,
+                    ),
+                    SizedBox(width: 6),
+                    Text(
+                      'Last updated: Today',
+                      style: TextStyle(color: Color(0xFF64748B), fontSize: 13),
+                    ),
+                  ],
+                ),
+              ],
+            )
+          : const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.access_time, color: Color(0xFF1D4ED8), size: 20),
+                    SizedBox(width: 10),
+                    Text(
+                      'Latest Cars for Sale',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF1D4ED8),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_today,
+                      color: Color(0xFF64748B),
+                      size: 16,
+                    ),
+                    SizedBox(width: 6),
+                    Text(
+                      'Last updated: Today',
+                      style: TextStyle(color: Color(0xFF64748B), fontSize: 13),
+                    ),
+                  ],
+                ),
+              ],
+            ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
 
@@ -324,8 +454,15 @@ class _HoverableLinkState extends State<HoverableLink> {
 }
 
 // --- APP HEADER ---
-class AppHeader extends StatelessWidget {
+class AppHeader extends StatefulWidget {
   const AppHeader({super.key});
+
+  @override
+  State<AppHeader> createState() => _AppHeaderState();
+}
+
+class _AppHeaderState extends State<AppHeader> {
+  bool _isSearchOpen = false;
 
   @override
   Widget build(BuildContext context) {
@@ -359,9 +496,17 @@ class AppHeader extends StatelessWidget {
                         _buildBranding(false),
                         const SizedBox(height: 12),
                         ElevatedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.search),
-                          label: const Text('Search Listings'),
+                          onPressed: () {
+                            setState(() {
+                              _isSearchOpen = !_isSearchOpen;
+                            });
+                          },
+                          icon: Icon(
+                            _isSearchOpen ? Icons.close : Icons.search,
+                          ),
+                          label: Text(
+                            _isSearchOpen ? 'Close' : 'Search Listings',
+                          ),
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(double.infinity, 44),
                             backgroundColor: const Color(0xFFF1F5F9),
@@ -373,6 +518,12 @@ class AppHeader extends StatelessWidget {
                             ),
                           ),
                         ),
+                        if (_isSearchOpen) ...[
+                          const SizedBox(height: 16),
+                          const Divider(color: Color(0xFFE2E8F0)),
+                          const SizedBox(height: 16),
+                          const SearchForm(),
+                        ],
                       ],
                     ),
             ],
@@ -681,13 +832,20 @@ class _SearchFormState extends State<SearchForm> {
 
 // --- SIDEBARS ---
 class FilterSidebar extends StatelessWidget {
-  const FilterSidebar({super.key});
+  final String? expandedSection;
+  final Function(String) onToggle;
+
+  const FilterSidebar({
+    super.key,
+    required this.expandedSection,
+    required this.onToggle,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildAccordion('Browse by Body Type', Icons.directions_car, [
+        _buildAccordion(context, 'Browse by Body Type', Icons.directions_car, [
           _buildFilterItem('Sedan', '185'),
           _buildFilterItem('SUV', '390'),
           _buildFilterItem('Hatchback', '142'),
@@ -700,7 +858,7 @@ class FilterSidebar extends StatelessWidget {
           _buildFilterItem('Hybrid', '62'),
         ]),
         const SizedBox(height: 20),
-        _buildAccordion('Browse by City', Icons.location_on, [
+        _buildAccordion(context, 'Browse by City', Icons.location_on, [
           _buildFilterItem('Bucharest', '412'),
           _buildFilterItem('Cluj-Napoca', '98'),
           _buildFilterItem('Timisoara', '74'),
@@ -712,7 +870,15 @@ class FilterSidebar extends StatelessWidget {
     );
   }
 
-  Widget _buildAccordion(String title, IconData icon, List<Widget> children) {
+  Widget _buildAccordion(
+    BuildContext context,
+    String title,
+    IconData icon,
+    List<Widget> children,
+  ) {
+    bool isDesktop = MediaQuery.of(context).size.width > 1024;
+    bool isExpanded = isDesktop || expandedSection == title;
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -721,27 +887,48 @@ class FilterSidebar extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: Color(0xFFF1F5F9),
-              border: Border(bottom: BorderSide(color: Color(0xFFE2E8F0))),
-            ),
-            child: Row(
-              children: [
-                Icon(icon, color: const Color(0xFF1D4ED8), size: 18),
-                const SizedBox(width: 10),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
+          GestureDetector(
+            onTap: isDesktop ? null : () => onToggle(title),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isExpanded ? const Color(0xFFF1F5F9) : Colors.white,
+                borderRadius: BorderRadius.vertical(
+                  top: const Radius.circular(8),
+                  bottom: Radius.circular(isExpanded ? 0 : 8),
+                ),
+                border: Border(
+                  bottom: BorderSide(
+                    color: isExpanded
+                        ? const Color(0xFFE2E8F0)
+                        : Colors.transparent,
                   ),
                 ),
-              ],
+              ),
+              child: Row(
+                children: [
+                  Icon(icon, color: const Color(0xFF1D4ED8), size: 18),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  if (!isDesktop)
+                    Icon(
+                      isExpanded ? Icons.expand_less : Icons.expand_more,
+                      color: const Color(0xFF64748B),
+                      size: 20,
+                    ),
+                ],
+              ),
             ),
           ),
-          ...children,
+          if (isExpanded) ...children,
         ],
       ),
     );
@@ -770,83 +957,96 @@ class FilterSidebar extends StatelessWidget {
 }
 
 class FeaturedSidebar extends StatelessWidget {
-  const FeaturedSidebar({super.key});
+  final String? expandedSection;
+  final Function(String) onToggle;
+
+  const FeaturedSidebar({
+    super.key,
+    required this.expandedSection,
+    required this.onToggle,
+  });
 
   @override
   Widget build(BuildContext context) {
+    bool isDesktop = MediaQuery.of(context).size.width > 1024;
+
     return Column(
       children: [
-        Container(
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: const Color(0xFFE2E8F0)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Color(0xFFF59E0B), width: 2),
+        if (isDesktop)
+          Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: const Color(0xFFE2E8F0)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xFFF59E0B), width: 2),
+                    ),
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.star, color: Color(0xFFF59E0B), size: 18),
+                      SizedBox(width: 10),
+                      Text(
+                        'Featured Listing',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFF59E0B),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: const Row(
-                  children: [
-                    Icon(Icons.star, color: Color(0xFFF59E0B), size: 18),
-                    SizedBox(width: 10),
-                    Text(
-                      'Featured Listing',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFFF59E0B),
-                      ),
-                    ),
-                  ],
+                Image.network(
+                  'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&q=80',
+                  height: 120,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
-              ),
-              Image.network(
-                'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&q=80',
-                height: 120,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'BMW M5 Competition',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
+                const Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'BMW M5 Competition',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      '2023 · 8,200 km · Petrol',
-                      style: TextStyle(color: Color(0xFF64748B), fontSize: 12),
-                    ),
-                    SizedBox(height: 12),
-                    Text(
-                      'UGX 89,500',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w900,
-                        color: Color(0xFF1D4ED8),
+                      SizedBox(height: 4),
+                      Text(
+                        '2023 · 8,200 km · Petrol',
+                        style: TextStyle(
+                          color: Color(0xFF64748B),
+                          fontSize: 12,
+                        ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 12),
+                      Text(
+                        'UGX 89,500',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                          color: Color(0xFF1D4ED8),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 20),
-        _buildSidebarAccordion('Cars by Make', Icons.flag, [
+        if (isDesktop) const SizedBox(height: 20),
+        _buildSidebarAccordion(context, 'Cars by Make', Icons.flag, [
           _buildFilterItem('Toyota', '215'),
           _buildFilterItem('Volkswagen', '184'),
           _buildFilterItem('BMW', '97'),
@@ -863,10 +1063,14 @@ class FeaturedSidebar extends StatelessWidget {
   }
 
   Widget _buildSidebarAccordion(
+    BuildContext context,
     String title,
     IconData icon,
     List<Widget> children,
   ) {
+    bool isDesktop = MediaQuery.of(context).size.width > 1024;
+    bool isExpanded = isDesktop || expandedSection == title;
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -875,27 +1079,48 @@ class FeaturedSidebar extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: Color(0xFFF1F5F9),
-              border: Border(bottom: BorderSide(color: Color(0xFFE2E8F0))),
-            ),
-            child: Row(
-              children: [
-                Icon(icon, color: const Color(0xFF1D4ED8), size: 18),
-                const SizedBox(width: 10),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
+          GestureDetector(
+            onTap: isDesktop ? null : () => onToggle(title),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isExpanded ? const Color(0xFFF1F5F9) : Colors.white,
+                borderRadius: BorderRadius.vertical(
+                  top: const Radius.circular(8),
+                  bottom: Radius.circular(isExpanded ? 0 : 8),
+                ),
+                border: Border(
+                  bottom: BorderSide(
+                    color: isExpanded
+                        ? const Color(0xFFE2E8F0)
+                        : Colors.transparent,
                   ),
                 ),
-              ],
+              ),
+              child: Row(
+                children: [
+                  Icon(icon, color: const Color(0xFF1D4ED8), size: 18),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  if (!isDesktop)
+                    Icon(
+                      isExpanded ? Icons.expand_less : Icons.expand_more,
+                      color: const Color(0xFF64748B),
+                      size: 20,
+                    ),
+                ],
+              ),
             ),
           ),
-          ...children,
+          if (isExpanded) ...children,
         ],
       ),
     );

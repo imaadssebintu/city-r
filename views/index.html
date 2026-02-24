@@ -4,7 +4,7 @@
 <div class="page-wrapper">
     <!-- Main Hub Grid -->
     <div
-        class="grid grid-cols-1 lg:grid-cols-[220px,minmax(0,1fr),220px] gap-x-8 gap-y-6 lg:gap-y-0 mt-8 items-start mb-16">
+        class="grid grid-cols-1 lg:grid-cols-[220px,minmax(0,1fr),220px] gap-x-8 gap-y-4 lg:gap-y-0 mt-8 items-start mb-16">
 
         <!-- Header Hub: Top on Mobile, Col 2 on Desktop -->
         <div class="lg:col-start-2 order-1 lg:mb-6">
@@ -22,214 +22,240 @@
         </div>
 
         <!-- Sidebar Left (Filters + Cards): Below Header on Mobile, Col 1 on Desktop -->
-        <aside class="sidebar-left lg:col-start-1 lg:row-start-1 lg:row-span-12 order-2 w-full flex flex-col gap-6">
-            <!-- Body Type Accordion -->
-            <div class="bg-card border border-border rounded-md overflow-hidden lg:mt-0">
-                <button onclick="toggleAccordion('body-type')"
-                    class="w-full text-left bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center justify-between text-foreground lg:cursor-default">
-                    <div class="flex items-center gap-2.5">
-                        <iconify-icon icon="lucide:car" class="text-primary"></iconify-icon>
-                        Browse by Body Type
+        <aside
+            class="sidebar-left lg:col-start-1 lg:row-start-1 lg:row-span-12 order-2 w-full lg:sticky lg:top-8 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto custom-scrollbar">
+            <div class="flex flex-col gap-4 lg:gap-6 lg:pb-12">
+                <!-- Body Type Accordion -->
+                <div class="bg-card border border-border rounded-md overflow-hidden lg:mt-0">
+                    <button onclick="toggleAccordion('body-type')"
+                        class="w-full text-left bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center justify-between text-foreground lg:cursor-default">
+                        <div class="flex items-center gap-2.5">
+                            <iconify-icon icon="lucide:car" class="text-primary"></iconify-icon>
+                            Browse by Body Type
+                        </div>
+                        <iconify-icon id="icon-body-type" icon="lucide:chevron-down"
+                            class="lg:hidden transition-transform duration-200"></iconify-icon>
+                    </button>
+                    <div id="body-type" class="hidden lg:block">
+                        <ul class="list-none p-0 m-0">
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?body=Sedan"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Sedan</a>
+                                <span class="text-muted-foreground text-[13px]">185</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?body=SUV"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">SUV</a>
+                                <span class="text-muted-foreground text-[13px]">390</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?body=Hatchback"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Hatchback</a>
+                                <span class="text-muted-foreground text-[13px]">142</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?body=Estate"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Estate</a>
+                                <span class="text-muted-foreground text-[13px]">67</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?body=Coupe"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Coupe</a>
+                                <span class="text-muted-foreground text-[13px]">48</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?body=Convertible"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Convertible</a>
+                                <span class="text-muted-foreground text-[13px]">13</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?body=Pickup"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Pickup</a>
+                                <span class="text-muted-foreground text-[13px]">29</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px] last:border-b-0">
+                                <a href="/cars?body=Van"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Van</a>
+                                <span class="text-muted-foreground text-[13px]">54</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?fuel=Electric"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Electric</a>
+                                <span class="text-muted-foreground text-[13px]">37</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px] last:border-b-0">
+                                <a href="/cars?fuel=Hybrid"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Hybrid</a>
+                                <span class="text-muted-foreground text-[13px]">62</span>
+                            </li>
+                        </ul>
                     </div>
-                    <iconify-icon id="icon-body-type" icon="lucide:chevron-down"
-                        class="lg:hidden transition-transform duration-200"></iconify-icon>
-                </button>
-                <div id="body-type" class="hidden lg:block">
-                    <ul class="list-none p-0 m-0">
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?body=Sedan"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Sedan</a>
-                            <span class="text-muted-foreground text-[13px]">185</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?body=SUV"
-                                class="text-foreground font-medium hover:text-primary transition-colors">SUV</a>
-                            <span class="text-muted-foreground text-[13px]">390</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?body=Hatchback"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Hatchback</a>
-                            <span class="text-muted-foreground text-[13px]">142</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?body=Estate"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Estate</a>
-                            <span class="text-muted-foreground text-[13px]">67</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?body=Coupe"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Coupe</a>
-                            <span class="text-muted-foreground text-[13px]">48</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?body=Convertible"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Convertible</a>
-                            <span class="text-muted-foreground text-[13px]">13</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?body=Pickup"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Pickup</a>
-                            <span class="text-muted-foreground text-[13px]">29</span>
-                        </li>
-                        <li
-                            class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px] last:border-b-0">
-                            <a href="/cars?body=Van"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Van</a>
-                            <span class="text-muted-foreground text-[13px]">54</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?fuel=Electric"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Electric</a>
-                            <span class="text-muted-foreground text-[13px]">37</span>
-                        </li>
-                        <li
-                            class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px] last:border-b-0">
-                            <a href="/cars?fuel=Hybrid"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Hybrid</a>
-                            <span class="text-muted-foreground text-[13px]">62</span>
-                        </li>
-                    </ul>
+                </div>
+
+                <!-- City Accordion -->
+                <div class="bg-card border border-border rounded-md overflow-hidden">
+                    <button onclick="toggleAccordion('city')"
+                        class="w-full text-left bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center justify-between text-foreground lg:cursor-default">
+                        <div class="flex items-center gap-2.5">
+                            <iconify-icon icon="lucide:map-pin" class="text-primary"></iconify-icon>
+                            Browse by City
+                        </div>
+                        <iconify-icon id="icon-city" icon="lucify:chevron-down"
+                            class="lg:hidden transition-transform duration-200"></iconify-icon>
+                    </button>
+                    <div id="city" class="hidden lg:block">
+                        <ul class="list-none p-0 m-0">
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?city=Bucharest"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Bucharest</a>
+                                <span class="text-muted-foreground text-[13px]">412</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?city=Cluj-Napoca"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Cluj-Napoca</a>
+                                <span class="text-muted-foreground text-[13px]">98</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?city=Timisoara"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Timișoara</a>
+                                <span class="text-muted-foreground text-[13px]">74</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?city=Iasi"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Iași</a>
+                                <span class="text-muted-foreground text-[13px]">55</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?city=Constanta"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Constanța</a>
+                                <span class="text-muted-foreground text-[13px]">43</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px] last:border-b-0">
+                                <a href="/cars?city=Brasov"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Brașov</a>
+                                <span class="text-muted-foreground text-[13px]">38</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-
-            <!-- City Accordion -->
-            <div class="bg-card border border-border rounded-md overflow-hidden">
-                <button onclick="toggleAccordion('city')"
-                    class="w-full text-left bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center justify-between text-foreground lg:cursor-default">
-                    <div class="flex items-center gap-2.5">
-                        <iconify-icon icon="lucide:map-pin" class="text-primary"></iconify-icon>
-                        Browse by City
-                    </div>
-                    <iconify-icon id="icon-city" icon="lucify:chevron-down"
-                        class="lg:hidden transition-transform duration-200"></iconify-icon>
-                </button>
-                <div id="city" class="hidden lg:block">
-                    <ul class="list-none p-0 m-0">
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?city=Bucharest"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Bucharest</a>
-                            <span class="text-muted-foreground text-[13px]">412</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?city=Cluj-Napoca"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Cluj-Napoca</a>
-                            <span class="text-muted-foreground text-[13px]">98</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?city=Timisoara"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Timișoara</a>
-                            <span class="text-muted-foreground text-[13px]">74</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?city=Iasi"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Iași</a>
-                            <span class="text-muted-foreground text-[13px]">55</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?city=Constanta"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Constanța</a>
-                            <span class="text-muted-foreground text-[13px]">43</span>
-                        </li>
-                        <li
-                            class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px] last:border-b-0">
-                            <a href="/cars?city=Brasov"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Brașov</a>
-                            <span class="text-muted-foreground text-[13px]">38</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
         </aside>
 
         <!-- Sidebar Right (Make Filter + Featured): Below Left Sidebar on Mobile, Col 3 on Desktop -->
-        <aside class="sidebar-right lg:col-start-3 lg:row-start-1 lg:row-span-12 order-3 w-full flex flex-col gap-6">
-            <!-- Featured Card: Hidden on Mobile -->
-            <div class="bg-card border border-border rounded-md overflow-hidden p-0 hidden lg:block lg:mt-0">
-                <div
-                    class="bg-card text-accent border-b-2 border-accent p-3.5 px-4 font-semibold text-[15px] flex items-center gap-2.5">
-                    <iconify-icon icon="lucide:star"></iconify-icon>
-                    Featured Listing
-                </div>
-                <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&q=80" alt="Featured Car"
-                    class="w-full h-40 object-cover" />
-                <div class="p-4">
-                    <h4 class="font-bold text-[16px] m-0 mb-1.5 text-foreground">BMW M5 Competition</h4>
-                    <p class="text-[13px] text-muted-foreground m-0 mb-3">2023 · 8,200 km · Petrol</p>
-                    <div class="text-[20px] font-extrabold text-primary m-0 mb-4">UGX 89,500</div>
-                    <a href="/cars/1"
-                        class="flex items-center justify-center w-full bg-primary text-primary-foreground p-3 rounded-[4px] font-semibold no-underline">View
-                        Details</a>
-                </div>
-            </div>
-
-            <!-- Make Accordion -->
-            <div class="bg-card border border-border rounded-md overflow-hidden">
-                <button onclick="toggleAccordion('make')"
-                    class="w-full text-left bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center justify-between text-foreground lg:cursor-default">
-                    <div class="flex items-center gap-2.5">
-                        <iconify-icon icon="lucide:flag" class="text-primary"></iconify-icon>
-                        Cars by Make
+        <aside
+            class="sidebar-right lg:col-start-3 lg:row-start-1 lg:row-span-12 order-3 w-full lg:sticky lg:top-8 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto custom-scrollbar">
+            <div class="flex flex-col gap-4 lg:gap-6 lg:pb-12">
+                <!-- Featured Card: Hidden on Mobile -->
+                <div class="bg-card border border-border rounded-md overflow-hidden p-0 hidden lg:block lg:mt-0">
+                    <div
+                        class="bg-card text-accent border-b-2 border-accent p-3.5 px-4 font-semibold text-[15px] flex items-center gap-2.5">
+                        <iconify-icon icon="lucide:star"></iconify-icon>
+                        Featured Listing
                     </div>
-                    <iconify-icon id="icon-make" icon="lucide:chevron-down"
-                        class="lg:hidden transition-transform duration-200"></iconify-icon>
-                </button>
-                <div id="make" class="hidden lg:block">
-                    <ul class="list-none p-0 m-0">
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?make=Toyota"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Toyota</a>
-                            <span class="text-muted-foreground text-[13px]">215</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?make=Volkswagen"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Volkswagen</a>
-                            <span class="text-muted-foreground text-[13px]">184</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?make=BMW"
-                                class="text-foreground font-medium hover:text-primary transition-colors">BMW</a>
-                            <span class="text-muted-foreground text-[13px]">97</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?make=Mercedes-Benz"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Mercedes-Benz</a>
-                            <span class="text-muted-foreground text-[13px]">88</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?make=Audi"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Audi</a>
-                            <span class="text-muted-foreground text-[13px]">72</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?make=Skoda"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Skoda</a>
-                            <span class="text-muted-foreground text-[13px]">65</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?make=Dacia"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Dacia</a>
-                            <span class="text-muted-foreground text-[13px]">59</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?make=Ford"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Ford</a>
-                            <span class="text-muted-foreground text-[13px]">48</span>
-                        </li>
-                        <li class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
-                            <a href="/cars?make=Tesla"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Tesla</a>
-                            <span class="text-muted-foreground text-[13px]">14</span>
-                        </li>
-                        <li
-                            class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px] last:border-b-0">
-                            <a href="/cars?make=Porsche"
-                                class="text-foreground font-medium hover:text-primary transition-colors">Porsche</a>
-                            <span class="text-muted-foreground text-[13px]">9</span>
-                        </li>
-                    </ul>
+                    <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&q=80" alt="Featured Car"
+                        class="w-full h-40 object-cover" />
+                    <div class="p-4">
+                        <h4 class="font-bold text-[16px] m-0 mb-1.5 text-foreground">BMW M5 Competition</h4>
+                        <p class="text-[13px] text-muted-foreground m-0 mb-3">2023 · 8,200 km · Petrol</p>
+                        <div class="text-[20px] font-extrabold text-primary m-0 mb-4">UGX 89,500</div>
+                        <a href="/cars/1"
+                            class="flex items-center justify-center w-full bg-primary text-primary-foreground p-3 rounded-[4px] font-semibold no-underline">View
+                            Details</a>
+                    </div>
                 </div>
-            </div>
+
+                <!-- Make Accordion -->
+                <div class="bg-card border border-border rounded-md overflow-hidden">
+                    <button onclick="toggleAccordion('make')"
+                        class="w-full text-left bg-secondary border-b border-border p-3.5 px-4 font-semibold text-[14px] flex items-center justify-between text-foreground lg:cursor-default">
+                        <div class="flex items-center gap-2.5">
+                            <iconify-icon icon="lucide:flag" class="text-primary"></iconify-icon>
+                            Cars by Make
+                        </div>
+                        <iconify-icon id="icon-make" icon="lucide:chevron-down"
+                            class="lg:hidden transition-transform duration-200"></iconify-icon>
+                    </button>
+                    <div id="make" class="hidden lg:block">
+                        <ul class="list-none p-0 m-0">
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?make=Toyota"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Toyota</a>
+                                <span class="text-muted-foreground text-[13px]">215</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?make=Volkswagen"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Volkswagen</a>
+                                <span class="text-muted-foreground text-[13px]">184</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?make=BMW"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">BMW</a>
+                                <span class="text-muted-foreground text-[13px]">97</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?make=Mercedes-Benz"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Mercedes-Benz</a>
+                                <span class="text-muted-foreground text-[13px]">88</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?make=Audi"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Audi</a>
+                                <span class="text-muted-foreground text-[13px]">72</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?make=Skoda"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Skoda</a>
+                                <span class="text-muted-foreground text-[13px]">65</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?make=Dacia"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Dacia</a>
+                                <span class="text-muted-foreground text-[13px]">59</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?make=Ford"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Ford</a>
+                                <span class="text-muted-foreground text-[13px]">48</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px]">
+                                <a href="/cars?make=Tesla"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Tesla</a>
+                                <span class="text-muted-foreground text-[13px]">14</span>
+                            </li>
+                            <li
+                                class="flex justify-between items-center px-4 py-2.5 border-b border-border text-[14px] last:border-b-0">
+                                <a href="/cars?make=Porsche"
+                                    class="text-foreground font-medium hover:text-primary transition-colors">Porsche</a>
+                                <span class="text-muted-foreground text-[13px]">9</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
         </aside>
 
         <!-- Main Content (Sort + Grid): Bottom on Mobile, Col 2 on Desktop -->

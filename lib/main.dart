@@ -97,31 +97,36 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Sidebar Left (220px) - Sticky via Offset
+                                // Sidebar Left (220px) - Sticky + Independent Scroll
                                 SizedBox(
                                   width: 220,
                                   child: AnimatedBuilder(
                                     animation: _scrollController,
                                     builder: (context, child) {
-                                      // Only sticky on desktop when scroll > 0
                                       double offset = 0;
                                       if (_scrollController.hasClients) {
                                         offset = _scrollController.offset;
                                       }
                                       return Transform.translate(
                                         offset: Offset(0, offset),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            top: 32,
-                                          ),
-                                          child: FilterSidebar(
-                                            expandedSection: expandedSection,
-                                            onToggle: (title) => setState(() {
-                                              expandedSection =
-                                                  expandedSection == title
-                                                  ? null
-                                                  : title;
-                                            }),
+                                        child: SizedBox(
+                                          height: MediaQuery.of(
+                                            context,
+                                          ).size.height,
+                                          child: SingleChildScrollView(
+                                            padding: const EdgeInsets.only(
+                                              top: 32,
+                                              bottom: 64,
+                                            ),
+                                            child: FilterSidebar(
+                                              expandedSection: expandedSection,
+                                              onToggle: (title) => setState(() {
+                                                expandedSection =
+                                                    expandedSection == title
+                                                    ? null
+                                                    : title;
+                                              }),
+                                            ),
                                           ),
                                         ),
                                       );
@@ -166,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 const SizedBox(width: 32),
-                                // Sidebar Right (220px) - Sticky via Offset
+                                // Sidebar Right (220px) - Sticky + Independent Scroll
                                 SizedBox(
                                   width: 220,
                                   child: AnimatedBuilder(
@@ -178,18 +183,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                       }
                                       return Transform.translate(
                                         offset: Offset(0, offset),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            top: 32,
-                                          ),
-                                          child: FeaturedSidebar(
-                                            expandedSection: expandedSection,
-                                            onToggle: (title) => setState(() {
-                                              expandedSection =
-                                                  expandedSection == title
-                                                  ? null
-                                                  : title;
-                                            }),
+                                        child: SizedBox(
+                                          height: MediaQuery.of(
+                                            context,
+                                          ).size.height,
+                                          child: SingleChildScrollView(
+                                            padding: const EdgeInsets.only(
+                                              top: 32,
+                                              bottom: 64,
+                                            ),
+                                            child: FeaturedSidebar(
+                                              expandedSection: expandedSection,
+                                              onToggle: (title) => setState(() {
+                                                expandedSection =
+                                                    expandedSection == title
+                                                    ? null
+                                                    : title;
+                                              }),
+                                            ),
                                           ),
                                         ),
                                       );

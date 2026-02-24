@@ -19,5 +19,9 @@ workflows:
       - name: Build Flutter web
         script: |
           flutter build web
+      - name: Build Android APK
+        script: |
+          flutter build apk --release --no-shrink
     artifacts:
       - build/web/**
+      - build/app/outputs/flutter-apk/app-release.apk

@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/template/html/v2"
 )
 
@@ -230,9 +231,17 @@ func main() {
 	// Serve static files
 	app.Static("/static", "./static")
 
+	// Enable CORS for Flutter Web
+	app.Use(cors.New())
+
 	// ─── Routes ────────────────────────────────────────────────
 	app.Get("/", handleHome)
 	app.Get("/cars/:id", handleDetails)
+
+	// ─── API Routes ────────────────────────────────────────────
+	app.Get("/api/cars", handleAPICars)
+	app.Get("/api/cars/:id", handleAPICarDetails)
+	app.Get("/api/stats", handleAPIStats)
 
 	log.Println("🚗  City-R Car Marketplace running on http://localhost:3000")
 	log.Fatal(app.Listen(":3000"))
@@ -291,4 +300,41 @@ func handleDetails(c *fiber.Ctx) error {
 		"Car":         car,
 		"RelatedCars": relatedCars,
 	}, "layout")
+}
+
+// ─── API Handlers ───────────────────────────────────────────
+
+func handleAPICars(c *fiber.Ctx) error {
+	return c.JSON(cars)
+}
+
+func handleAPICarDetails(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid ID"})
+	}
+
+	var car *Car
+	for i := range cars {
+		if cars[i].ID == id {
+			car = &cars[i]
+			break
+		}
+	}
+
+	if car == nil {
+		return c.Status(404).JSON(fiber.Map{"error": "Car not found"})
+	}
+
+	return c.JSON(car)
+}
+
+func handleAPIStats(c *fiber.Ctx) error {
+	stats := Stats{
+		TotalListings:   len(cars),
+		HappyCustomers:  1240,
+		YearsInBusiness: 8,
+		CarsDelivered:   3800,
+	}
+	return c.JSON(stats)
 }

@@ -108,18 +108,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                       if (_scrollController.hasClients) {
                                         offset = _scrollController.offset;
                                       }
-                                      return Padding(
-                                        padding: EdgeInsets.only(
-                                          top: offset + 32,
-                                        ),
-                                        child: FilterSidebar(
-                                          expandedSection: expandedSection,
-                                          onToggle: (title) => setState(() {
-                                            expandedSection =
-                                                expandedSection == title
-                                                ? null
-                                                : title;
-                                          }),
+                                      return Transform.translate(
+                                        offset: Offset(0, offset),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 32,
+                                          ),
+                                          child: FilterSidebar(
+                                            expandedSection: expandedSection,
+                                            onToggle: (title) => setState(() {
+                                              expandedSection =
+                                                  expandedSection == title
+                                                  ? null
+                                                  : title;
+                                            }),
+                                          ),
                                         ),
                                       );
                                     },
@@ -173,18 +176,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                       if (_scrollController.hasClients) {
                                         offset = _scrollController.offset;
                                       }
-                                      return Padding(
-                                        padding: EdgeInsets.only(
-                                          top: offset + 32,
-                                        ),
-                                        child: FeaturedSidebar(
-                                          expandedSection: expandedSection,
-                                          onToggle: (title) => setState(() {
-                                            expandedSection =
-                                                expandedSection == title
-                                                ? null
-                                                : title;
-                                          }),
+                                      return Transform.translate(
+                                        offset: Offset(0, offset),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 32,
+                                          ),
+                                          child: FeaturedSidebar(
+                                            expandedSection: expandedSection,
+                                            onToggle: (title) => setState(() {
+                                              expandedSection =
+                                                  expandedSection == title
+                                                  ? null
+                                                  : title;
+                                            }),
+                                          ),
                                         ),
                                       );
                                     },

@@ -1,6 +1,6 @@
 services:
   app:
-    build: .
+    build: ./backend
     container_name: city-r-app
     ports:
       - "3000:3000"
